@@ -1,0 +1,29 @@
+module Haskelllab1 where
+import Char
+pal str = str == reverse str
+-- #1 done
+count :: (a -> Bool) -> [a] -> Int
+count f xs =  let
+                list = filter f xs
+                in length list
+-- #2 done
+title :: String -> String
+title xs = let
+              capfirstlet (fl:nfl) = toUpper fl : map toLower nfl
+              in unwords (map capfirstlet (words xs))
+-- #3 done
+longest :: [Char] -> [[Char]]
+longest xs = let
+              wordsizelist = map length (words xs)
+              longboi = maximum wordsizelist
+              predicate w = length w == longboi
+              in filter  (predicate) (words xs)
+
+-- #4 done
+subset :: Eq a=> [a] -> [a] -> Bool
+subset (x:xs) y = elem x y && subset xs y
+subset [] y = True
+-- #5 done
+power :: [a] -> [[a]]
+power [] = [[]]
+power (x:xs) = power xs ++ [x: ps | ps <- power xs]

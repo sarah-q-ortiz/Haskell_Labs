@@ -1,0 +1,37 @@
+import Data.Char
+data Circle = Circle Float Float Float deriving (Show, Eq)
+-- prob1 done
+overlap :: Circle -> Circle -> Bool
+overlap (Circle x1 y1 r1) (Circle x2 y2 r2) = (x1-x2)^2 + (y1-y2)^2 <= (r1+r2)^2
+--prob2 done
+perms :: [a] -> [[a]]
+perms []=[[]]
+perms (x:xs) = concat (map(perm [] x) (perms xs))
+            where
+              perm xs x [] = [xs ++ [x]]
+              perm xs x (y:ys) =(xs ++ (x:y:ys)) : (perm  (xs ++ [y]) x ys)
+-- prob3 done
+combos :: [a] -> [b] -> [(a,b)]
+combos xs ys = [(x,y) | x <- xs, y <- ys]
+-- prob4
+ltc :: [a] -> [(a,a)]
+ltc [] = []
+ltc (x:ys) = map p ys ++ ltc ys
+            where p y = (x,y)
+overlaps list = let
+                  clist = ltc list
+                  over (Circle x1 y1 r1, Circle x2 y2 r2) = (x1-x2)^2 + (y1-y2)^2 <= (r1+r2)^2
+                  in length (filter (==True) (map over clist))
+-- prob5
+trans :: [[a]]->[[a]]
+trans ([]:_)= []
+trans xss = (map head xss) : trans (map tail xss)
+-- prob6
+comp b = ord b - ord 'a'
+recomp c = chr (ord 'a' + c)
+capcomp d =  ord d - ord 'A'
+recapcomp e = chr (ord 'A' + e)
+shifty n l | isLower  l = recomp ((comp l + n) `mod` 26)
+           | isUpper l = recapcomp ((capcomp l + n) `mod` 26)
+           | otherwise = l
+rot n xs = [shifty n x | x <- xs]
